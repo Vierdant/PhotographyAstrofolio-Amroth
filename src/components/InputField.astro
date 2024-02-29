@@ -1,0 +1,40 @@
+---
+interface Props {
+    id: string,
+    type: any,
+    name?: string,
+}
+
+const { id, name = id, type } = Astro.props;
+---
+
+<div>
+    <label for={id}>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
+    <input type={type} id={id} name={name} required>
+</div>
+
+<style>
+    div {
+		display: flex;
+		flex-direction: column;
+		margin: 1em 0px;
+	}
+
+	input {
+		outline: none;
+		border: none;
+		background-color: transparent;
+		border-bottom: 0.1vw solid var(--light-shade);
+		transform: all 0.2s ease;
+		font-size: 1.2vw;
+		color: var(--light-shade);
+	}
+
+	input:hover, input:focus {
+		border-bottom: 0.1vw solid var(--light-accent);
+	}
+
+	.input-error {
+		border-bottom: 0.1vw solid #d74f4f;
+	}
+</style>

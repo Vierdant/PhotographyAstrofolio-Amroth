@@ -1,0 +1,165 @@
+---
+import { Image } from 'astro:assets';
+import fg from 'fast-glob';
+import Layout from '../layouts/Layout.astro';
+import ProjectList from '../components/ProjectList.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Button from '../components/Button.astro';
+import StatsContainer from '../components/StatsContainer.astro';
+import Stat from '../components/Stat.astro';
+
+
+import heroImage from '/public/assets/hero-image.png';
+
+const picturesTaken = fg.sync('public/projects/**')
+---
+
+<Layout navLocation='home'>
+	<main>
+		<div class="hero">
+			<div>
+				<h1>I'm the Photographer</h1>
+				<h1><span>You need</span></h1>
+				<Button type='primary' link='projects'>Projects</Button>
+			</div>
+			<Image src={heroImage} alt="hero" loading='eager'>
+		</div>
+		<div class="projects">
+			<h2>Projects</h2>
+			<ProjectList autoFit={false}>
+				<ProjectCard slug='project/test' project='test'/>
+				<ProjectCard slug='project/test' project='test'/>
+				<ProjectCard slug='project/test' project='test'/>
+				<ProjectCard slug='project/test' project='test'/>
+			</ProjectList>
+			<Button type='primary' link='projects'>View More</Button>
+		</div>
+		<div id="about-me" class="about-me">
+			<div class="about-me-image">
+				<img src="assets/about me image.webp" alt="Author">
+			</div>
+			<div class="about-me-info">
+				<h1>About me</h1>
+				<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Placeat iste, officiis dolore aliquam optio autem? Ipsam perferendis provident cum, tenetur nemo accusantium dicta dolores soluta sed inventore libero nam consectetur.
+				</p>
+				<StatsContainer>
+					<Stat src='assets/picture-stat.png' title='Pictures Taken' alt="pictures" stat={picturesTaken.length} />
+					<Stat src='assets/person-stat.png' title='Satisifed Costumers' alt="satisfied" stat={0} />
+				</StatsContainer>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.hero {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		place-content: center;
+		place-items: center;
+		padding: 20px;
+		gap: 1rem;
+		font-size: 1.5vw;
+		background-color: var(--light-shade);
+	}
+
+	.hero img {
+		width: 100%;
+		height: auto;
+	}
+
+	.hero h1 {
+		line-height: 12px;
+	}
+
+	.hero h1 span {
+		color: var(--light-accent);
+	}
+
+	.projects {
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		background-color: var(--dark-shade);
+		color: var(--light-shade);
+		overflow: auto;
+		font-size: 1.2vw;
+		padding-bottom: 25px;
+	}
+
+	.about-me {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		place-content: center;
+		place-items: center;
+		background-color: var(--dark-accent);
+		color: var(--light-shade);
+		font-size: 1.2vw;
+		padding: 1em 0px;
+		position: relative;
+	}
+
+	.about-me-image {
+		position: relative;
+		display: inline-block;
+		margin: 2em;
+	}
+
+	.about-me-image::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 100%;
+		height: 100%;
+		background-color: var(--light-accent);
+		z-index: 1;
+	}
+
+	.about-me-image img {
+		position: relative;
+		display: block;
+		rotate: -5deg;
+		height: auto;
+		width: 100%;
+		z-index: 2;
+	}
+
+	.about-me-info {
+		margin: 1em;
+	}
+
+	@media only screen and (max-width: 900px) {
+		.hero {
+			grid-template-columns: 1fr;
+		}
+
+		.hero img {
+			width: 400px;
+			order: -1;
+		}
+
+		.about-me {
+			grid-template-columns: 1fr;
+		}
+
+		.about-me img {
+			width: 200px;
+		}
+
+		.about-me .img-backdrop::before {
+			height: 300px;
+			width: 200px;
+		}
+
+		.about-me-text {
+			margin-top: 25px;
+		}
+	}
+
+	@media only screen and (max-width: 600px) {
+		.hero img {
+			width: 300px;
+		}
+	}
+</style>

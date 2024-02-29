@@ -1,0 +1,20 @@
+{
+  "name": "photographyastrofolio",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.1.0",
+    "astro": "^4.4.0",
+    "marked": "^12.0.0",
+    "nanostores": "^0.9.5",
+    "swiper": "^11.0.6",
+    "validator": "^13.11.0"
+  }
+}

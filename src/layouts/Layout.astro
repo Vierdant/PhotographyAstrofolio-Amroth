@@ -1,0 +1,161 @@
+---
+import Navbar from "../components/Navbar.astro";
+import InputField from '../components/InputField.astro';
+
+interface Props {
+	navLocation: "home" | "projects" | ""
+}
+
+const { navLocation } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+		<title>Photography Portfolio</title>
+	</head>
+	<body>
+		<Navbar active={navLocation} />
+		<slot />
+		<div id="contact-me" class="contact-me">
+			<h1>Get In Touch</h1>
+			<p>Email: Photography@ludvigk.se</p>
+			<form id="contact-form" class="input-section" method="POST">
+				<div class="contact-username">
+					<InputField type={'text'} id='name'/>
+					<InputField type={'text'} id='surname'/>
+				</div>
+				<div class="contact-creds">
+					<InputField type={'text'} id='phone' name='Phone Number'/>
+					<InputField type={'email'} id='email'/>
+					<InputField type={'text'} id='message'/>
+				</div>
+				<input id="submit-btn" class="submit" type="submit" value="Contact Me"/>
+			</form>
+		</div>
+	</body>
+</html>
+
+<script>	
+	import validator from 'validator';
+
+	emailjs.init({
+		publicKey: 'OCROOLuuSFU5X3pgG'
+	});
+
+	document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+		if (!validator.isNumeric(event.target[2].value)) {
+			document.getElementById('phone').classList.add('input-error')
+			return;
+		}
+		
+		if (!validator.isEmail(event.target[3].value)) {
+			document.getElementById('email').classList.add('input-error')
+			return;
+		}
+
+		document.getElementById('submit-btn').disabled = true;
+		
+        emailjs.sendForm('service_7gnpytp', 'template_2i76qkr', this)
+            .then(() => {
+                console.log('Email Sent!');
+				document.getElementById('submit-btn').value = "Sent!"
+            }, (error) => {
+                console.log('FAILED...', error);
+				document.getElementById('submit-btn').value = "Failed... Error"
+            });
+    });
+</script>
+
+<style is:global>
+	@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+	:root {
+		--main-color: #9196A8;
+		--dark-shade: #2A2935;
+		--dark-accent: #8C5851;
+		--light-shade: #FAF7F7;
+		--light-accent: #BE7030;
+
+		--swiper-pagination-color: var(--light-accent);
+		--swiper-pagination-bullet-inactive-color: var(--main-color);
+		--swiper-pagination-bullet-width: 1vw;
+		--swiper-pagination-bullet-height: 1vw;
+	}
+
+	html, body {
+		margin: 0;
+		font-family: "Poppins", sans-serif;
+		color: var(--dark-shade);
+		scroll-behavior: smooth;
+	}
+
+	a:link, a:visited {
+		color: var(--light-shade);
+		text-decoration: none;
+	}
+</style>
+
+<style>
+	.contact-me {
+		display: flex;
+		flex-direction: column;
+		place-items: center;
+		background-color: var(--dark-shade);
+		padding: 1em 0em;
+		color: var(--light-shade);
+		font-size: 1.2vw;
+	}
+
+	.contact-me h1 {
+		color: var(--light-shade);
+		text-align: center;
+		margin: 0;
+		padding-top: 1em;
+	}
+
+	.contact-me p {
+		font-size: 1vw;
+	}
+
+	.input-section {
+		width: 40vw;
+	}
+
+	.contact-username {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+	}
+
+	.contact-creds {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.input-section .submit {
+		border: none;
+		background-color: var(--light-accent);
+		color: var(--light-shade);
+		padding: 0.8em 0.6em;
+		border-radius: 5px;
+		transition: all 0.2s ease;
+		width: 9vw;
+		font-size: 1.2vw;
+		align-self: center;
+		
+	}
+
+	.input-section .submit:hover:not(:disabled) {
+		box-shadow: inset 9vw 0px 0px 0px var(--dark-accent);
+	}
+
+	.input-section .submit:disabled {
+		background-color: var(--main-color);
+	}
+</style>

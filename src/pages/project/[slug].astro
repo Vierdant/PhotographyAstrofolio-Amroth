@@ -1,0 +1,192 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { marked } from "marked";
+import fg from "fast-glob";
+import ProjectList from "../../components/ProjectList.astro";
+
+export async function getStaticPaths() {
+  const projectEnries = await getCollection("projects");
+  return projectEnries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const allProjects = await getCollection("projects");
+const otherProjects = allProjects
+  .sort(() => Math.random() - Math.random())
+  .slice(0, 3);
+
+const { entry } = Astro.props;
+const images = fg.sync(`public/projects/${entry.slug}/*`).map((path) => {
+  return path.substring(6, path.length);
+});
+
+const content = marked.parse(entry.body);
+---
+
+<Layout navLocation="">
+  <div class="title">
+    <h1>{entry.data.title}</h1>
+    <article set:html={content} />
+  </div>
+  <ProjectList autoFit={true}>
+    {
+      images.map((image, i) => {
+        return (
+          <div class="image-frame">
+            <img src={image} alt={`gal ${i}`} loading="eager" />
+          </div>
+        );
+      })
+    }
+  </ProjectList>
+  <div class="other-projects">
+    <h1>Other Projects</h1>
+    <div class="swiper swiper-container">
+      <div class="swiper-wrapper">
+        {
+          otherProjects.map((project, i) => {
+            return (
+              <div class="swiper-slide">
+                <a href={project.slug}>
+                  <img
+                    src={`/projects/${project.slug}/${project.data.thumbnail}`}
+                    alt={`corousel ${i}`}
+                    loading="eager"
+                  />
+                </a>
+              </div>
+            );
+          })
+        }
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+    <div class="popup-image">
+      <span>&times;</span>
+      <img src={images[1]} alt="popup" />
+    </div>
+  </div>
+
+  <script>
+    import Swiper from "swiper";
+    import { Navigation } from "swiper/modules";
+    import "swiper/css";
+    import "swiper/css/navigation";
+
+    const swiper = new Swiper(".swiper-container", {
+      modules: [Navigation],
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+
+    document.querySelectorAll(".image-frame img").forEach((image) => {
+      image.addEventListener("click", () => {
+        document.querySelector(".popup-image").style.display = "block";
+        document.querySelector(".popup-image img").src = image.getAttribute("src");
+      });
+    });
+
+    document
+      .querySelector(".popup-image span")
+      .addEventListener("click", () => {
+        document.querySelector(".popup-image").style.display = "none";
+      });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key == "Escape") {
+        document.querySelector(".popup-image").style.display = "none";
+      }
+    });
+  </script>
+
+  <style>
+
+    :root {
+      --swiper-navigation-sides-offset: 10px;
+    }
+
+    .swiper {
+      position: relative;
+      width: 40%;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 20px;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .title {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      min-width: fit-content;
+    }
+
+    .image-frame {
+      margin: 1em;
+    }
+
+    .image-frame img {
+      width: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .other-projects {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      color: var(--light-shade);
+      background-color: var(--light-accent);
+      padding-bottom: 2em;
+    }
+
+    .popup-image {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.9);
+      height: 100%;
+      width: 100%;
+      z-index: 100;
+    }
+
+    .popup-image span {
+      position: absolute;
+      top: 50px;
+      right: 10px;
+      font-size: 60px;
+      font-weight: bolder;
+      color: var(--light-shade);
+      cursor: pointer;
+      z-index: 900000;
+    }
+
+    .popup-image img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      widows: 750px;
+      object-fit: cover;
+    }
+  </style>
+</Layout>

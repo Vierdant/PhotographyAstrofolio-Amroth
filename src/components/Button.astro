@@ -1,0 +1,33 @@
+---
+interface Props {
+    type: string,
+    link: string,
+    style?: string
+}
+
+const { type, link, style } = Astro.props;
+---
+
+<a href={link}><button class={type} style={style}><slot/></button></a>
+
+<style>
+    button {
+		border: none;
+		padding: 0.8em 1em;
+		border-radius: 5px;
+		font-size: 1.4vw;
+		transition: all 0.2s ease;
+		width: 9vw;
+		align-self: center;
+		
+	}
+
+    .primary {
+		background-color: var(--light-accent);
+		color: var(--light-shade);
+    }
+
+    .primary:hover {
+        box-shadow: inset 9vw 0px 0px 0px var(--dark-accent);
+    }
+</style>

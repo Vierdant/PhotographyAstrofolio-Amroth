@@ -1,0 +1,26 @@
+---
+interface Props {
+    src: string,
+    stat: number,
+    alt: string,
+    title?: string,
+}
+
+const { src, stat, alt, title } = Astro.props;
+---
+
+<div>
+    <img src={src} alt={alt} />
+    <h4>{title}</h4>
+    <h1>{stat}</h1>
+</div>
+
+<style>
+    div h4 {
+		margin-top: -0.5em;
+	}
+
+	div img {
+		width: 5vw;
+	}
+</style>
