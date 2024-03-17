@@ -1,6 +1,6 @@
 ---
-title: "product photography: Bottles" 
-id: test
+title: "Product Photography: Bottles" 
+id: bottles
 thumbnail: 1.webp
 tags:
 - test
