@@ -1,16 +1,16 @@
 ---
-import fg from 'fast-glob';
+import fg from "fast-glob";
 
 interface Props {
-    slug: string,
-    project: string,
-    name?: string,
-    nameSize?: number
+    slug: string;
+    project: string;
+    name?: string;
+    nameSize?: number;
 }
 
 const { slug, project, name = project, nameSize } = Astro.props;
 
-const images = fg.sync(`public/projects/${project}/*`).map(path => {    
+const images = fg.sync(`public/projects/${project}/*`).map((path) => {
     return path.substring(6, path.length);
 });
 ---
@@ -19,28 +19,38 @@ const images = fg.sync(`public/projects/${project}/*`).map(path => {
     <div class="swiper-wrapper">
         {
             images.map((image, i) => {
-                return <div class="swiper-slide"><a href={slug}><img src={image} alt={`corousel ${i}`} loading="eager"></a></div>
+                return (
+                    <div class="swiper-slide">
+                        <a href={slug}>
+                            <img
+                                src={image}
+                                alt={`corousel ${i}`}
+                                loading="eager"
+                            />
+                        </a>
+                    </div>
+                );
             })
         }
     </div>
     <div class="swiper-hover">
-        <p style=`font-size: ${nameSize ? nameSize : '1.6'}vw;`>{name}</p>    
+        <p style=`font-size: ${nameSize ? nameSize : '1.6'}vw;`>{name}</p>
     </div>
     <div class="swiper-pagination"></div>
 </div>
 
 <script>
-    import Swiper from 'swiper';
-    import { Navigation, Pagination } from 'swiper/modules';
-    import 'swiper/css';
-    import 'swiper/css/pagination';
+    import Swiper from "swiper";
+    import { Navigation, Pagination } from "swiper/modules";
+    import "swiper/css";
+    import "swiper/css/pagination";
 
     const swiper = new Swiper(".swiper-container", {
         modules: [Navigation, Pagination],
         pagination: {
-            el: '.swiper-pagination',
-            clickable: true
-        }
+            el: ".swiper-pagination",
+            clickable: true,
+        },
     });
 </script>
 
@@ -104,7 +114,7 @@ const images = fg.sync(`public/projects/${project}/*`).map(path => {
     }
 
     .swiper-container:hover,
-    .swiper-container:focus  {
+    .swiper-container:focus {
         --swiper-pagination-bullet-inactive-color: var(--light-shade);
     }
 
