@@ -50,7 +50,7 @@ const content = marked.parse(entry.body);
           otherProjects.map((project, i) => {
             return (
               <div class="swiper-slide">
-                <a href={project.slug}>
+                <a href={`/project/${project.slug}`}>
                   <img
                     src={`/projects/${project.slug}/${project.data.thumbnail}`}
                     alt={`corousel ${i}`}
