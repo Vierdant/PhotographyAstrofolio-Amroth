@@ -7,4 +7,4 @@ tags:
 - project
 ---
 
-_Fuck you_
+_Hello there_
