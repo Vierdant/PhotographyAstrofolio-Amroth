@@ -1,7 +1,7 @@
 ---
 title: "Product Photography: Bottles" 
 id: bottles
-thumbnail: 2024-02-26_Bottle-Shoot_Home-2.JPG
+thumbnail: bottle-1.webp
 tags:
 - test
 - project
