@@ -161,7 +161,7 @@ const content = marked.parse(entry.body);
     .popup-image {
       display: none;
       position: fixed;
-      top: 40px;
+      top: 0;
       left: 0;
       background: rgba(0, 0, 0, 0.9);
       height: 100%;
@@ -184,7 +184,8 @@ const content = marked.parse(entry.body);
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 80vw;
+      
+      width: 40vw;
       transform: translate(-50%, -50%);
       widows: 750px;
       object-fit: cover;
